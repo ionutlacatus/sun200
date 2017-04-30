@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="SunConnStr-Web.config Connection String" description="SunConnStr Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:sun200.database.windows.net,1433;Initial Catalog=sun200db;Persist Security Info=False;User ID=sun200;Password=Superpass987@;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Zitec\ User\\Documents\\Visual\ Studio\ 2017\\Projects\\sun200api\\sun200api\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='SunConnStr']/@connectionString" />
+  </parameter>
+</parameters>

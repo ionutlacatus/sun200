@@ -1,0 +1,100 @@
+﻿@model IEnumerable<sun200api.Models.SunSampleNew>
+
+@{
+	ViewBag.Title = "All";
+}
+
+<h2>Device with id: @ViewBag.DeviceId</h2>
+
+<table class="table" id="samples">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.Id)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.deviceid)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.voltage)
+		</th>
+		<th>
+			@Html.DisplayNameFor(model => model.created)
+		</th>
+		<th></th>
+	</tr>
+
+	@foreach (var item in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => item.Id)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.deviceid)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.voltage)
+			</td>
+			<td>
+				@Html.DisplayFor(modelItem => item.created)
+			</td>
+		</tr>
+	}
+
+</table>
+
+<script>
+	var lastId;
+	var deviceId = @ViewBag.DeviceId;
+	getMax(deviceId, function (err, data) {
+        if (err == null)
+		{
+			getGtRecursively(data.Id, deviceId);
+        }
+        else
+        {
+            alert(err);
+        }
+    });
+
+    function getGtRecursively(id,deviceid) {
+        jQuery.ajax({
+            type: "GET",
+            url: "http://sun200.azurewebsites.net/sun/gt/" + id + "/" + deviceid,
+            dataType: "json",
+			success: function (data) {
+				lastId = data.Id;
+				setTimeout(function () {
+					if (data.Id != id) {
+						$("#samples tr:first-child").after("<tr style='display:none;'><td>" + data.Id + "</td><td>" + data.deviceid + "</td><td>" + data.voltage + "</td>        <td>" + data.created + "</td></tr>");
+						$("#samples tr:nth-child(2)").fadeIn(3000);
+					}
+					getGtRecursively(lastId, deviceid);
+				}, 5000);
+            },
+            error: function (err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+    function getMax(deviceid, fn)
+	{
+		debugger;
+        jQuery.ajax({
+            type: "GET",
+            url: "http://sun200.azurewebsites.net/sun/max/" + deviceid,
+            dataType: "json",
+			success: function (data) {
+				debugger;
+                fn(null, data);
+            },
+            error: function (err) {
+                console.log(JSON.stringify(err));
+            }
+        });
+    }
+
+
+
+</script>
